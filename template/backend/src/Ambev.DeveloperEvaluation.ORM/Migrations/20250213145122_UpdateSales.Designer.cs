@@ -3,6 +3,7 @@ using System;
 using Ambev.DeveloperEvaluation.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20250213145122_UpdateSales")]
+    partial class UpdateSales
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,10 +27,9 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ProductId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("Canceled")
                         .ValueGeneratedOnAdd()
@@ -35,7 +37,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal>("Discount")
                         .ValueGeneratedOnAdd()
@@ -46,9 +48,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("numeric(10,2)")
                         .HasDefaultValue(0m);
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Quantity")
                         .ValueGeneratedOnAdd()
@@ -65,12 +64,10 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id");
+                    b.HasKey("ProductId");
 
                     b.HasIndex("ProductId");
 
@@ -98,7 +95,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
@@ -107,21 +104,20 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         .IsRequired()
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("character varying(50)");
+                    b.Property<long>("Number")
+                        .HasColumnType("serial");
 
-                    b.Property<DateTime>("OpenDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<decimal>("TotalValue")
+                    b.Property<decimal>("Total")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("numeric(10,2)")
                         .HasDefaultValue(0m);
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
