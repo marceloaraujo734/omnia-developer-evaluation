@@ -1,11 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Commons.Commands;
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 
-public class CreateProductValidator : AbstractValidator<ProductCommand>
+public class UpdateProductValidator : AbstractValidator<ProductCommand>
 {
-    public CreateProductValidator()
+    public UpdateProductValidator()
     {
         RuleFor(product => product.ProductId)
             .NotEmpty().WithMessage("The product name is required!");

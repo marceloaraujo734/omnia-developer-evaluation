@@ -7,4 +7,5 @@ public record ProductResult
     public decimal Quantity { get; init; }
     public decimal Price { get; init; }
     public decimal Total { get; init; }
+    public decimal Discount { get; init; }
 }

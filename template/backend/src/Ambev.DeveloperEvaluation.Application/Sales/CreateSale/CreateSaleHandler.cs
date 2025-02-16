@@ -17,6 +17,14 @@ public sealed class CreateSaleHandler(ISaleRepository _repository, IMapper _mapp
         }
 
         var sale = _mapper.Map<Sale>(command);
+        
+        validationResult = await sale.Validate(cancellationToken);
+        if (validationResult.IsValid is false)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+
+        sale.ApplyDiscounts();
 
         var result = await _repository.CreateAsync(sale, cancellationToken);
 

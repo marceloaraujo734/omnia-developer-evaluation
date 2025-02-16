@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 
-public class CreateSaleValidator : AbstractValidator<CreateSaleCommand>
+public class UpdateSaleValidator : AbstractValidator<UpdateSaleCommand>
 {
-    public CreateSaleValidator()
+    public UpdateSaleValidator()
     {
+        RuleFor(sale => sale.Id)
+            .NotEmpty().WithMessage("The identifier is required!");
+
         RuleFor(sale => sale.Number)
             .NotEmpty().WithMessage("The number is required!")
             .MaximumLength(50).WithMessage("The sale number cannot exceed 50 characters!");
@@ -37,7 +40,7 @@ public class CreateSaleValidator : AbstractValidator<CreateSaleCommand>
             .WithMessage("The total sale amount does not match the sum of the item values.");
 
         RuleForEach(sale => sale.Products)
-            .SetValidator(new CreateProductValidator());
+            .SetValidator(new UpdateProductValidator());
 
     }
 }

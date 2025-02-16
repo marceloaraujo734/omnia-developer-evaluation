@@ -1,7 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.Commons.Commands;
-using Ambev.DeveloperEvaluation.Application.Sales.Commons.Results;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Commons.Results;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSaleProduct;
-using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Commons.Requests;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Commons.Responses;
 using AutoMapper;
 

@@ -27,7 +27,7 @@ public class SaleConfiguration : IEntityTypeConfiguration<Sale>
             .IsRequired();
 
         builder.Property(u => u.OpenDate)
-            .HasColumnType("timestamp with time zone")
+            .HasColumnType("timestamp without time zone")
             .IsRequired();
 
         builder.Property(u => u.CustomerId)
