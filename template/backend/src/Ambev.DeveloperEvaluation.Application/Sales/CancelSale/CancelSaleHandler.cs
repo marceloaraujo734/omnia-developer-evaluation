@@ -1,10 +1,9 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
-using AutoMapper;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 
-public sealed class CancelSaleHandler(ISaleRepository _repository, IMapper _mapper) : IRequestHandler<CancelSaleCommand, CancelSaleResult>
+public sealed class CancelSaleHandler(ISaleRepository _repository) : IRequestHandler<CancelSaleCommand, CancelSaleResult>
 {
     public async Task<CancelSaleResult> Handle(CancelSaleCommand command, CancellationToken cancellationToken)
     {
@@ -16,10 +15,8 @@ public sealed class CancelSaleHandler(ISaleRepository _repository, IMapper _mapp
 
         sale.ChangeToCancelled();
 
-        var result = await _repository.UpdateAsync(sale, cancellationToken);
+        await _repository.UpdateAsync(sale, cancellationToken);
 
-        var response = _mapper.Map<CancelSaleResult>(result);
-
-        return response;
+        return CancelSaleResult.Builder();
     }
 }

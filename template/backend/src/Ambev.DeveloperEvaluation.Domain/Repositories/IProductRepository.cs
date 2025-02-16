@@ -4,5 +4,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 
 public interface IProductRepository
 {
-    Task<List<Product>> CreateAsync(List<Product> products, CancellationToken cancellationToken);
+    Task<Product?> GetByKeysAsync(Guid saleId, Guid productId, CancellationToken cancellationToken);
+
+    Task<Product> UpdateAsync(Product product, CancellationToken cancellationToken);
 }

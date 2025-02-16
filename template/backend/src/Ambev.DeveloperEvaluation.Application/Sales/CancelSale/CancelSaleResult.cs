@@ -1,5 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.Commons.Results;
+﻿namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
-
-public record CancelSaleResult : SaleResult;
+public record CancelSaleResult(bool Success)
+{
+    public static CancelSaleResult Builder() => new(true);    
+}

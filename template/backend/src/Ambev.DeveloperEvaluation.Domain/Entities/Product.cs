@@ -27,7 +27,7 @@ public class Product : BaseEntity
 
     public decimal Discount { get; private set; }
 
-    public bool Canceled { get; init; } = false;
+    public bool Canceled { get; private set; } = false;
 
     public DateTime CreatedAt { get; init; }
 
@@ -51,4 +51,6 @@ public class Product : BaseEntity
         Total = product.Total;
         Discount = 0.00m;
     }
+
+    public void ChangeToCancelled() => Canceled = true;
 }

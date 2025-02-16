@@ -1,12 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleProduct;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.Application.Sales.CreateSaleProduct;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
-using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSaleProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 using AutoMapper;
@@ -41,7 +40,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         var response = _mapper.Map<CreateSaleResponse>(result);
 
-        return Created(string.Empty, ApiResponseWithData<CreateSaleResponse>.Result("", response));
+        return Created(string.Empty, ApiResponseWithData<CreateSaleResponse>.Result("Sale created successfully", response));
     }
 
     /// <summary>
@@ -89,7 +88,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     /// <summary>
     /// Updates a new sale
     /// </summary>
-    /// <param name="request">The sale creation request</param>
+    /// <param name="id">The id request</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The Updated sale details</returns>
     [HttpDelete]
@@ -100,34 +99,30 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     {
         var command = _mapper.Map<CancelSaleCommand>(id);
 
-        var result = await _mediator.Send(command, cancellationToken);
+        await _mediator.Send(command, cancellationToken);
 
-        var response = _mapper.Map<CancelSaleResponse>(result);
-
-        return Ok(ApiResponseWithData<CancelSaleResponse>.Result("Sale Cancel successfully", response));
+        return Ok(ApiResponse.Create("Sale Cancel successfully"));
     }
 
     /// <summary>
-    /// Creates a new sale
+    /// Updates a new sale
     /// </summary>
-    /// <param name="request">The sale product creation request</param>
+    /// <param name="id">The sale id request</param>
+    /// <param name="productId">The product id request</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created sale product details</returns>
-    [HttpPost]
-    [Route("{id}/products")]
-    [ProducesResponseType(typeof(ApiResponseWithData<CreateSaleProductResponse>), StatusCodes.Status201Created)]
+    /// <returns>The Updated sale details</returns>
+    [HttpDelete]
+    [Route("{id}/products/{productId}")]
+    [ProducesResponseType(typeof(ApiResponseWithData<UpdateSaleResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateSaleProduct([FromRoute] Guid id, [FromBody] CreateSaleProductRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CancelProductSale([FromRoute] Guid id, Guid productId, CancellationToken cancellationToken)
     {
+        var request = CancelSaleProductRequest.Builder(id, productId);
         
-            var command = _mapper.Map<CreateSaleProductCommand>(request, opt => { opt.Items["SaleId"] = id; });
-            var response = await _mediator.Send(command, cancellationToken);
+        var command = _mapper.Map<CancelSaleProductCommand>(request);
 
-            return Created(string.Empty, new ApiResponseWithData<CreateSaleProductResponse>
-            {
-                Success = true,
-                Message = "Sale products created successfully",
-                Data = _mapper.Map<CreateSaleProductResponse>(response)
-            });
-    }
+        await _mediator.Send(command, cancellationToken);
+
+        return Ok(ApiResponse.Create("Sale product Cancel successfully"));
+    }    
 }

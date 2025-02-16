@@ -1,5 +1,3 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Commons.Responses;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
-
-public record CancelSaleResponse : SaleResponse;    
+public record CancelSaleResponse(bool Success);    
