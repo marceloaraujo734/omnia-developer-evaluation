@@ -10,5 +10,6 @@ public record SaleResult
     public Guid BranchId { get; init; }
     public string BranchName { get; init; } = string.Empty;
     public decimal TotalValue { get; init; }
+    public bool Canceled { get; init; }
     public List<ProductResult> Products { get; set; } = [];
 }
