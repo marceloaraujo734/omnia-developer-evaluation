@@ -11,4 +11,6 @@ public interface ISaleRepository
     Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<List<Sale>> GetSalesAsync(int page, int size, string order, CancellationToken cancellationToken);
+
+    Task<int> GetSalesTotal(CancellationToken cancellationToken);
 }

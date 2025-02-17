@@ -24,6 +24,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             {
                 await HandleValidationExceptionAsync(context, exception);
             }
+            catch (KeyNotFoundException exception)
+            {
+                await HandleKeyNotFoundExceptionAsync(context, exception);
+            }
             catch (Exception exception)
             {
                 await HandleExceptionAsync(context, exception);
@@ -41,6 +45,21 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
                 Message = "Validation Failed",
                 Errors = exception.Errors
                     .Select(error => (ValidationErrorDetail)error)
+            };
+
+            return context.Response.WriteAsync(response.ToJson());
+        }
+
+        private static Task HandleKeyNotFoundExceptionAsync(HttpContext context, KeyNotFoundException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+            var response = new 
+            {
+                Success = false,
+                Message = "Not Found",
+                Errors = exception.Message
             };
 
             return context.Response.WriteAsync(response.ToJson());

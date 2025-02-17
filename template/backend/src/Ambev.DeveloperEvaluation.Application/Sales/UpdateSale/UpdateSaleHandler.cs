@@ -14,9 +14,9 @@ public sealed class UpdateSaleHandler(ISaleRepository _repository, IMapper _mapp
         if (validationResult.IsValid is false) throw new ValidationException(validationResult.Errors);
 
         var sale = await _repository.GetByIdAsync(command.Id, cancellationToken);
-        if (sale == null)
+        if (sale is null)
         {
-            throw new KeyNotFoundException($"Sale with ID {command.Id} not found");
+            throw new KeyNotFoundException($"Sale Id: {command.Id}, not found!");
         }
 
         var newSale = _mapper.Map<Sale>(command);

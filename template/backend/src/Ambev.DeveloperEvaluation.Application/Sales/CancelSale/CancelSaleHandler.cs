@@ -8,9 +8,9 @@ public sealed class CancelSaleHandler(ISaleRepository _repository) : IRequestHan
     public async Task<CancelSaleResult> Handle(CancelSaleCommand command, CancellationToken cancellationToken)
     {
         var sale = await _repository.GetByIdAsync(command.Id, cancellationToken);
-        if (sale == null)
+        if (sale is null)
         {
-            throw new KeyNotFoundException($"Sale with ID {command.Id} not found");
+            throw new KeyNotFoundException($"Sale Id: {command.Id}, not found!");
         }
 
         sale.ChangeToCancelled();

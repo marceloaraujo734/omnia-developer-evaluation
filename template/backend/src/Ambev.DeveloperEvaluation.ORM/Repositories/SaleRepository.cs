@@ -36,14 +36,12 @@ public class SaleRepository(DefaultContext _context) : ISaleRepository
 
         if (!string.IsNullOrWhiteSpace(order)) query = query.OrderBy(order);
 
-        var result = await query
+        return await query
                         .Skip((page - 1) * size)
                         .Take(size)
                         .ToListAsync(cancellationToken);
-
-        return result;
     }
 
-    public async Task<int> GetProductsTotal(CancellationToken cancellationToken)
-        => await _context.Products.CountAsync(cancellationToken);
+    public async Task<int> GetSalesTotal(CancellationToken cancellationToken)
+        => await _context.Sales.CountAsync(cancellationToken);
 }

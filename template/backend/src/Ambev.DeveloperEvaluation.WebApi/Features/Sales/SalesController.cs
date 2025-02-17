@@ -2,11 +2,14 @@
 using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleProduct;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSales;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Commons.Responses;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSales;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 using AutoMapper;
 using MediatR;
@@ -44,7 +47,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     }
 
     /// <summary>
-    /// Updates a new sale
+    /// Updates a sale
     /// </summary>
     /// <param name="request">The sale creation request</param>
     /// <param name="cancellationToken">Cancellation token</param>
@@ -65,7 +68,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     }
 
     /// <summary>
-    /// Updates a new sale
+    /// Get sale
     /// </summary>
     /// <param name="request">The sale creation request</param>
     /// <param name="cancellationToken">Cancellation token</param>
@@ -86,7 +89,29 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     }
 
     /// <summary>
-    /// Updates a new sale
+    /// Get sales
+    /// </summary>
+    /// <param name="request">The sale creation request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The Updated sale details</returns>
+    [HttpGet]    
+    [ProducesResponseType(typeof(ApiResponseWithData<UpdateSaleResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetSales([FromQuery] int page = 1, int size = 10, string order = "", CancellationToken cancellationToken = default)
+    {
+        var request = GetSalesRequest.Builder(page, size, order);
+
+        var command = _mapper.Map<GetSalesCommand>(request);
+
+        var result = await _mediator.Send(command, cancellationToken);
+
+        var response = _mapper.Map<GetSalesResponse>(result);
+
+        return OkPaginated(new PaginatedList<SaleResponse>(response.Sales, response.TotalCount, page, size));
+    }
+
+    /// <summary>
+    /// Cancel sale
     /// </summary>
     /// <param name="id">The id request</param>
     /// <param name="cancellationToken">Cancellation token</param>
@@ -105,7 +130,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     }
 
     /// <summary>
-    /// Updates a new sale
+    /// Cancel sale product
     /// </summary>
     /// <param name="id">The sale id request</param>
     /// <param name="productId">The product id request</param>

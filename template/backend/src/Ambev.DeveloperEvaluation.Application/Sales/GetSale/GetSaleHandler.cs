@@ -8,10 +8,12 @@ public sealed class GetSaleHandler(ISaleRepository _repository, IMapper _mapper)
 {
     public async Task<GetSaleResult> Handle(GetSaleCommand command, CancellationToken cancellationToken)
     {
-        var result = await _repository.GetByIdAsync(command.Id, cancellationToken);
+        var sale = await _repository.GetByIdAsync(command.Id, cancellationToken);
+        if (sale is null)
+        {
+            throw new KeyNotFoundException($"Sale Id: {command.Id} not found!");
+        }
 
-        var response = _mapper.Map<GetSaleResult>(result);
-
-        return response;
+        return _mapper.Map<GetSaleResult>(sale);
     }
 }
