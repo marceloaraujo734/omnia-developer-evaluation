@@ -8,13 +8,6 @@ public record GetSalesResult()
 
     public int TotalCount { get; private set; }
 
-    public int Page { get; private set; }
-
-    public int Size { get; private set; }
-
     internal void SetTotalCount(int totalCount)
         => TotalCount = totalCount;
-
-    internal void SetPagination(int page, int size)
-        => (Page, Size) = (page, size);
 }

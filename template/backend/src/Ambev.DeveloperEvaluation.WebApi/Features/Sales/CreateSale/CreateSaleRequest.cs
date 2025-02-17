@@ -7,4 +7,3 @@ public record CreateSaleRequest : SaleRequest
     public string Number { get; init; } = string.Empty;
     public DateTime OpenDate { get; init; }
 }
-
