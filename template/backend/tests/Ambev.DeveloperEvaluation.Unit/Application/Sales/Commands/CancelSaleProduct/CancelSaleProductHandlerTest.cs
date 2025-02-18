@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.CancelSaleProduct;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.Sales.Fixture.Repositories;
 using FluentAssertions;
@@ -12,6 +13,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sales.Commands.CancelSalePr
 public class CancelSaleProductHandlerTest
 {
     private readonly IProductRepository _repositoryMock;
+    private readonly IPublishEvent _publishEventMock;
     private readonly ILogger<CancelSaleProductHandler> _loggerMock;
 
     private readonly CancelSaleProductHandler _handler;
@@ -19,9 +21,10 @@ public class CancelSaleProductHandlerTest
     public CancelSaleProductHandlerTest()
     {
         _repositoryMock = Substitute.For<IProductRepository>();
+        _publishEventMock = Substitute.For<IPublishEvent>();
         _loggerMock = Substitute.For<ILogger<CancelSaleProductHandler>>();
 
-        _handler = new CancelSaleProductHandler(_repositoryMock, _loggerMock);
+        _handler = new CancelSaleProductHandler(_repositoryMock, _publishEventMock, _loggerMock);
     }
 
     [Fact(DisplayName = "Should cancel sale product with successfully")]

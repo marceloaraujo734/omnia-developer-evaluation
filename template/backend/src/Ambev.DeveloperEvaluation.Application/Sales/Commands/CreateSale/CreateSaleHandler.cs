@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Extensions;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 
-public sealed class CreateSaleHandler(ISaleRepository _repository, IMapper _mapper, ILogger<CreateSaleHandler> _logger)
+public sealed class CreateSaleHandler(ISaleRepository _repository, IMapper _mapper, IPublishEvent _publishEvent, ILogger<CreateSaleHandler> _logger)
     : IRequestHandler<CreateSaleCommand, CreateSaleResult>
 {
     public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
@@ -34,6 +35,8 @@ public sealed class CreateSaleHandler(ISaleRepository _repository, IMapper _mapp
         sale.ApplyDiscounts();
 
         var result = await _repository.CreateAsync(sale, cancellationToken);
+
+        await _publishEvent.SendMessage("Sale created with succesfully!");
 
         _logger.LogInformation("Sale Number: {0} with Id: {1}, created with successfully!", command.Number, result.Id);
 

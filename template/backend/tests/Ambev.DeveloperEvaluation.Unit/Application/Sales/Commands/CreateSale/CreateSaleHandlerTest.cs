@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Extensions;
 using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentAssertions;
@@ -14,6 +15,7 @@ public class CreateSaleHandlerTest
 {
     private readonly ISaleRepository _repositoryMock;
     private readonly IMapper _mapperMock;
+    private readonly IPublishEvent _publishEventMock;
     private readonly ILogger<CreateSaleHandler> _loggerMock;
 
     private readonly CreateSaleHandler _handler;
@@ -22,9 +24,10 @@ public class CreateSaleHandlerTest
     {
         _repositoryMock = Substitute.For<ISaleRepository>();
         _mapperMock = Substitute.For<IMapper>();
+        _publishEventMock = Substitute.For<IPublishEvent>();
         _loggerMock = Substitute.For<ILogger<CreateSaleHandler>>();
 
-        _handler = new CreateSaleHandler(_repositoryMock, _mapperMock, _loggerMock);
+        _handler = new CreateSaleHandler(_repositoryMock, _mapperMock, _publishEventMock, _loggerMock);
     }
 
     [Fact(DisplayName = "Should create sale with successfully")]

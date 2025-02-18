@@ -1,10 +1,11 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Events;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.CancelSaleProduct;
 
-public sealed class CancelSaleProductHandler(IProductRepository _repository, ILogger<CancelSaleProductHandler> _logger)
+public sealed class CancelSaleProductHandler(IProductRepository _repository, IPublishEvent _publishEvent, ILogger<CancelSaleProductHandler> _logger)
     : IRequestHandler<CancelSaleProductCommand, CancelSaleProductResult>
 {
     public async Task<CancelSaleProductResult> Handle(CancelSaleProductCommand command, CancellationToken cancellationToken)
@@ -19,6 +20,8 @@ public sealed class CancelSaleProductHandler(IProductRepository _repository, ILo
         product.ChangeToCancelled();
 
         await _repository.UpdateAsync(product, cancellationToken);
+
+        await _publishEvent.SendMessage("Sale product cancelled with succesfully!");
 
         _logger.LogInformation("Product with this id: {0} in this sale: {1}, cancelled with successfully!", command.ProductId, command.SaleId);
 
