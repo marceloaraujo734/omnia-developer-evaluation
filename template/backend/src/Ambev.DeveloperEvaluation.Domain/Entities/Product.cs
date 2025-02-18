@@ -38,13 +38,13 @@ public class Product : BaseEntity
     public static Product Builder(Guid productId, decimal quantity, decimal price, decimal total)
         => new(productId, quantity, price, total);
 
-    internal void ApplyDiscount(decimal discount)
+    public void ApplyDiscount(decimal discount)
     {
         Discount = discount;
         Total = Total - (Total * Discount);
     }
 
-    internal void ChangeValues(Product product)
+    public void ChangeValues(Product product)
     {
         Quantity = product.Quantity;
         Price = product.Price;

@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Commons.Results;
-using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Queries.GetSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Commons.Responses;
 using AutoMapper;
 
@@ -9,8 +9,8 @@ public class GetSaleProfile : Profile
 {
     public GetSaleProfile()
     {
-        CreateMap<Guid, GetSaleCommand>()
-            .ConstructUsing(id => new GetSaleCommand(id));
+        CreateMap<Guid, GetSaleQuery>()
+            .ConstructUsing(id => new GetSaleQuery(id));
 
         CreateMap<ProductResult, ProductResponse>();
         CreateMap<GetSaleResult, GetSaleResponse>();

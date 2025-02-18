@@ -1,9 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
-using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleProduct;
-using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
-using Ambev.DeveloperEvaluation.Application.Sales.GetSales;
-using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.CancelSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.CancelSaleProduct;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.UpdateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Queries.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Queries.GetSales;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.Commons.Responses;
@@ -79,7 +79,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetSale([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<GetSaleCommand>(id);
+        var command = _mapper.Map<GetSaleQuery>(id);
 
         var result = await _mediator.Send(command, cancellationToken);
 
@@ -101,7 +101,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     {
         var request = GetSalesRequest.Builder(page, size, order);
 
-        var command = _mapper.Map<GetSalesCommand>(request);
+        var command = _mapper.Map<GetSalesQuery>(request);
 
         var result = await _mediator.Send(command, cancellationToken);
 
