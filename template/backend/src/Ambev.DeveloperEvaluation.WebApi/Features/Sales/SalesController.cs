@@ -64,7 +64,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         var response = _mapper.Map<UpdateSaleResponse>(result);
 
-        return Ok(ApiResponseWithData<UpdateSaleResponse>.Result("Sale Updated successfully", response));
+        return Ok(response);
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         var response = _mapper.Map<GetSaleResponse>(result);
 
-        return Ok(ApiResponseWithData<GetSaleResponse>.Result("Sale get successfully", response));
+        return Ok(response);
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(ApiResponse.Create("Sale Cancel successfully"));
+        return Ok(ApiResponse.Create("Sale cancel successfully"));
     }
 
     /// <summary>
@@ -148,6 +148,6 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(ApiResponse.Create("Sale product Cancel successfully"));
+        return Ok(ApiResponse.Create("Sale product cancel successfully"));
     }    
 }
