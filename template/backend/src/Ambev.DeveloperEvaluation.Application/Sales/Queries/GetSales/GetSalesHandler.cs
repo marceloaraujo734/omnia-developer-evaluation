@@ -9,9 +9,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.Queries.GetSales;
 public class GetSalesHandler(ISaleRepository _repository, IMapper _mapper, ILogger<GetSalesHandler> _logger)
     : IRequestHandler<GetSalesQuery, GetSalesResult>
 {
-    public async Task<GetSalesResult> Handle(GetSalesQuery command, CancellationToken cancellationToken)
+    public async Task<GetSalesResult> Handle(GetSalesQuery query, CancellationToken cancellationToken)
     {
-        var sales = await _repository.GetSalesAsync(command.Page, command.Size, command.Order, cancellationToken);
+        var sales = await _repository.GetSalesAsync(query.Page, query.Size, query.Order, cancellationToken);
         if (sales is null or { Count: 0 })
         {
             _logger.LogInformation("Sales not found!");
@@ -23,7 +23,7 @@ public class GetSalesHandler(ISaleRepository _repository, IMapper _mapper, ILogg
         var response = _mapper.Map<GetSalesResult>(sales);
         response.SetTotalCount(totalCount);
 
-        _logger.LogInformation("Sales successfully achieved with the following parameters: {0}!", command.ToJson());
+        _logger.LogInformation("Sales successfully achieved with the following parameters: {0}!", query.ToJson());
 
         return response;
     }

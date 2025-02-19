@@ -34,7 +34,7 @@ public class GetSalesHandlerTest
         const int once = 1;
         const int totalCount = 2;
 
-        var command = GetSalesCommandMock.Builder();
+        var query = GetSalesQueryMock.Builder();
         var salesMock = SaleRepositoryMock.GetSales();
         var resultsMock = GetSalesResultMock.Builder(salesMock);
 
@@ -44,7 +44,7 @@ public class GetSalesHandlerTest
         _mapperMock.Map<GetSalesResult>(salesMock).Returns(resultsMock);
 
         //When
-        var response = await _handler.Handle(command, new CancellationToken());
+        var response = await _handler.Handle(query, new CancellationToken());
 
         //Then
         response.Should().BeOfType<GetSalesResult>();
@@ -62,14 +62,15 @@ public class GetSalesHandlerTest
         //Given
         const int once = 1;
         const int never = 0;
-        var command = GetSalesCommandMock.Builder();
-        var message = $"Sale not found!";
+        const string message = "Sales not found!";
+
+        var query = GetSalesQueryMock.Builder();
 
         //When
-        var response = async () => await _handler.Handle(command, new CancellationToken());
+        var response = async () => await _handler.Handle(query, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
 
         await _repositoryMock.Received(once).GetSalesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
         await _repositoryMock.Received(never).GetSalesTotal(Arg.Any<CancellationToken>());
@@ -82,17 +83,18 @@ public class GetSalesHandlerTest
         //Given
         const int once = 1;
         const int never = 0;
-        var command = GetSalesCommandMock.Builder();
+        const string message = "Sales not found!";
+
+        var query = GetSalesQueryMock.Builder();
         var salesMock = SaleRepositoryMock.GetSalesEmpty();
-        var message = $"Sale not found!";
 
         _repositoryMock.GetSalesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(salesMock);
 
         //When
-        var response = async () => await _handler.Handle(command, new CancellationToken());
+        var response = async () => await _handler.Handle(query, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
 
         await _repositoryMock.Received(once).GetSalesAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
         await _repositoryMock.Received(never).GetSalesTotal(Arg.Any<CancellationToken>());

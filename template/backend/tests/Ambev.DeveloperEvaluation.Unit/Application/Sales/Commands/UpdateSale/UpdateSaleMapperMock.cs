@@ -12,8 +12,6 @@ internal static class UpdateSaleMapperMock
         var sale = new Sale()
         {
             Id = command.Id,
-            Number = command.Number,
-            OpenDate = command.OpenDate,
             CreatedAt = DateTime.UtcNow,
         };
 
@@ -31,8 +29,6 @@ internal static class UpdateSaleMapperMock
         var sale = new Sale()
         {
             Id = command.Id,
-            Number = command.Number,
-            OpenDate = command.OpenDate,
             CreatedAt = DateTime.UtcNow,
         };
 

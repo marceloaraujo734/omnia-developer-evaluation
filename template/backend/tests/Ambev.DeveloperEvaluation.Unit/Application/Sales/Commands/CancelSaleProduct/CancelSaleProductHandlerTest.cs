@@ -64,7 +64,7 @@ public class CancelSaleProductHandlerTest
         var response = async () => await _handler.Handle(command, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
 
         await _repositoryMock.Received(once).GetByKeysAsync(Arg.Any<Guid>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>());
         await _repositoryMock.Received(never).UpdateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>());

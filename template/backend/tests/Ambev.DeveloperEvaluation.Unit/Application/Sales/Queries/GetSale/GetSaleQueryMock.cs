@@ -3,7 +3,7 @@ using Bogus;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Sales.Queries.GetSale;
 
-internal static class GetSaleCommandMock
+internal static class GetSaleQueryMock
 {
     internal static GetSaleQuery Builder()
     {

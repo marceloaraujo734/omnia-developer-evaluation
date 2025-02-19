@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentAssertions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
@@ -64,13 +65,20 @@ public class CreateSaleHandlerTest
         const int never = 0;
 
         var command = CreateSaleCommandMock.BuilderEmpty();
-        var message = $"Data sent to create sale is invalid: {command.ToJson()}";
 
         //When
         var response = async () => await _handler.Handle(command, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<ValidationException>()
+            .WithMessage("*The number is required!*")
+            .WithMessage("*The sale date is required!*")
+            .WithMessage("*The customer id is required!*")
+            .WithMessage("*The customer name is required!*")
+            .WithMessage("*The branch id is required!*")
+            .WithMessage("*The branch is required!*")
+            .WithMessage("*The total sale value must be greater than zero!*")
+            .WithMessage("*The sale must have at least one product.*");
 
         await _repositoryMock.Received(never).CreateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
     }
@@ -91,7 +99,7 @@ public class CreateSaleHandlerTest
         var response = async () => await _handler.Handle(command, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>();
+        await response.Should().ThrowExactlyAsync<ValidationException>();
 
         await _repositoryMock.Received(never).CreateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
     }

@@ -35,7 +35,6 @@ public sealed class UpdateSaleHandler(ISaleRepository _repository, IMapper _mapp
         sale.ChangeCustomer(saleUpdate.CustomerId, command.CustomerName);
         sale.ChangeBranch(saleUpdate.BranchId, command.BranchName);
         sale.ChangeProducts(saleUpdate.Products);
-        sale.SetTotalValue(saleUpdate.TotalValue);
 
         validationResult = await sale.Validate(cancellationToken);
         if (validationResult.IsValid is false)

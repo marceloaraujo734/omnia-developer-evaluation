@@ -32,7 +32,7 @@ public class GetSaleHandlerTest
     {
         //Given
         const int once = 1;
-        var command = GetSaleCommandMock.Builder();
+        var query = GetSaleQueryMock.Builder();
         var saleMock = SaleRepositoryMock.GetSale();
         var resultMock = GetSaleResultMock.Builder(saleMock);
 
@@ -41,7 +41,7 @@ public class GetSaleHandlerTest
         _mapperMock.Map<GetSaleResult>(saleMock).Returns(resultMock);
 
         //When
-        var response = await _handler.Handle(command, new CancellationToken());
+        var response = await _handler.Handle(query, new CancellationToken());
 
         //Then
         response.Should().BeOfType<GetSaleResult>();
@@ -56,14 +56,14 @@ public class GetSaleHandlerTest
     {
         //Given
         const int once = 1;
-        var command = GetSaleCommandMock.Builder();
-        var message = $"Sale Id: {command.Id}, not found!";
+        var query = GetSaleQueryMock.Builder();
+        var message = $"Sale Id: {query.Id} not found!";
 
         //When
-        var response = async () => await _handler.Handle(command, new CancellationToken());
+        var response = async () => await _handler.Handle(query, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
 
         await _repositoryMock.Received(once).GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>());
     }

@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentAssertions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
@@ -58,7 +59,7 @@ public class UpdateSaleHandlerTest
         await _repositoryMock.Received(once).UpdateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Invalid command must occur")]
+    [Fact(DisplayName = "Invalid command must occur error")]
     [Trait("Application", "Application Sales Tests")]
     public async Task Handler_InvalidRequest_ReturnValidationError()
     {
@@ -66,13 +67,12 @@ public class UpdateSaleHandlerTest
         const int never = 0;
 
         var command = UpdateSaleCommandMock.BuilderEmpty();
-        var message = $"Data sent to update sale is invalid: {command.ToJson()}";
 
         //When
         var response = async () => await _handler.Handle(command, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<ValidationException>();
 
         await _repositoryMock.Received(never).GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>());
         await _repositoryMock.Received(never).UpdateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
@@ -93,21 +93,24 @@ public class UpdateSaleHandlerTest
         var response = async () => await _handler.Handle(command, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
+        await response.Should().ThrowAsync<KeyNotFoundException>().WithMessage(message);
 
         await _repositoryMock.Received(once).GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>());
         await _repositoryMock.Received(never).UpdateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact(DisplayName = "Invalid sale must occur")]
+    [Fact(DisplayName = "Invalid sale must occur error by quantity invalid")]
     [Trait("Application", "Application Sales Tests")]
     public async Task Handler_InvalidSale_ReturnValidationError()
     {
         //Given
+        const int once = 1;
         const int never = 0;
 
         var command = UpdateSaleCommandMock.Builder();
         var saleMock = UpdateSaleMapperMock.CommandToEntityInvalid(command);
+
+        _repositoryMock.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>()).Returns(saleMock);
 
         _mapperMock.Map<Sale>(command).Returns(saleMock);
 
@@ -115,8 +118,9 @@ public class UpdateSaleHandlerTest
         var response = async () => await _handler.Handle(command, new CancellationToken());
 
         //Then
-        response?.Should().ThrowAsync<KeyNotFoundException>();
+        await response.Should().ThrowAsync<ValidationException>();
 
-        await _repositoryMock.Received(never).CreateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
+        await _repositoryMock.Received(once).GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>());
+        await _repositoryMock.Received(never).UpdateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
     }
 }

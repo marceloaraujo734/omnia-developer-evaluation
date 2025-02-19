@@ -9,14 +9,6 @@ public class UpdateSaleValidator : AbstractValidator<UpdateSaleCommand>
         RuleFor(sale => sale.Id)
             .NotEmpty().WithMessage("The identifier is required!");
 
-        RuleFor(sale => sale.Number)
-            .NotEmpty().WithMessage("The number is required!")
-            .MaximumLength(50).WithMessage("The sale number cannot exceed 50 characters!");
-
-        RuleFor(sale => sale.OpenDate)
-            .NotEmpty().WithMessage("The sale date is required!")
-            .LessThanOrEqualTo(DateTime.Now.Date).WithMessage("The sale date cannot be in the future!");
-
         RuleFor(sale => sale.CustomerId)
             .NotEmpty().WithMessage("The customer id is required!");
 

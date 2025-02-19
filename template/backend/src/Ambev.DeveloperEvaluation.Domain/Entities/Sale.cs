@@ -64,6 +64,8 @@ public class Sale : BaseEntity
 
             Products.Add(product);
         }
+
+        SetTotalValue(Products.Sum(item => item.Total));
     }
 
     public void ChangeToCancelled() => Canceled = true;
