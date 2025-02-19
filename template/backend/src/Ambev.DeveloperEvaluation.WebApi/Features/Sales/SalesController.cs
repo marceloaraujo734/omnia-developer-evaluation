@@ -79,9 +79,9 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetSale([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<GetSaleQuery>(id);
+        var query = _mapper.Map<GetSaleQuery>(id);
 
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
 
         var response = _mapper.Map<GetSaleResponse>(result);
 
@@ -101,9 +101,9 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
     {
         var request = GetSalesRequest.Builder(page, size, order);
 
-        var command = _mapper.Map<GetSalesQuery>(request);
+        var query = _mapper.Map<GetSalesQuery>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
 
         var response = _mapper.Map<GetSalesResponse>(result);
 
