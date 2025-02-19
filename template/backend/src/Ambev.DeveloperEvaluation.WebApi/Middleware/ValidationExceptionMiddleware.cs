@@ -1,6 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Extensions;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.WebApi.Common;
-using Ambev.DeveloperEvaluation.WebApi.Extension;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Middleware
