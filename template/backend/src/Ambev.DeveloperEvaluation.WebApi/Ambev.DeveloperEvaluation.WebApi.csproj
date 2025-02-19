@@ -31,4 +31,20 @@
     <Folder Include="Features\Users\UpdateUser\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Extension\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Extension\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Extension\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Extension\**" />
+  </ItemGroup>
+
 </Project>
