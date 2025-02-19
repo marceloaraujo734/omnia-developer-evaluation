@@ -126,7 +126,7 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(ApiResponse.Create("Sale cancel successfully"));
+        return Ok(new { id, Message = "Sale cancel successfully!" });
     }
 
     /// <summary>
@@ -148,6 +148,6 @@ public class SalesController(IMediator _mediator, IMapper _mapper) : BaseControl
 
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(ApiResponse.Create("Sale product cancel successfully"));
+        return Ok(new { id, productId, Message = "Sale product cancel successfully" });
     }    
 }
