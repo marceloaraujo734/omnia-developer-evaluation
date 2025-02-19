@@ -13,6 +13,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSales;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales;
@@ -21,11 +22,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales;
 /// Controller for managing sale operations
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class SalesController(IMediator _mediator, IMapper _mapper) : BaseController
 {
-    //private readonly ILogger<SalesController> _logger;
-
     /// <summary>
     /// Creates a new sale
     /// </summary>
