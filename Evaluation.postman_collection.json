@@ -1,0 +1,599 @@
+{
+	"info": {
+		"_postman_id": "f0956f15-7ff2-41bb-a93b-b2d32f0868d3",
+		"name": "Evaluation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6751901",
+		"_collection_link": "https://blue-capsule-246112.postman.co/workspace/FoodService~7192dc3e-5721-4038-97cf-30bb41a5d7d7/collection/6751901-f0956f15-7ff2-41bb-a93b-b2d32f0868d3?action=share&source=collection_link&creator=6751901"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "api/Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if (pm.response.code === 200)\r",
+									"{    \r",
+									"    pm.collectionVariables.set('token', responseJson.data.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@abinbev.com.br\",\r\n  \"password\": \"Admin@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "api/Users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"Admin\",\r\n  \"password\": \"Admin@123\",\r\n  \"phone\": \"11999999999\",\r\n  \"email\": \"admin@abinbev.com.br\",\r\n  \"status\": 1,\r\n  \"role\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/Users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"Users"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://localhost:7181/api/Users' \\\r\n  -H 'accept: text/plain' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"username\": \"string\",\r\n  \"password\": \"string\",\r\n  \"phone\": \"string\",\r\n  \"email\": \"string\",\r\n  \"status\": 0,\r\n  \"role\": 0\r\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sales",
+			"item": [
+				{
+					"name": "CreateSale",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var moment = require('moment');\r",
+									"\r",
+									"pm.collectionVariables.set('openDate', moment().format('YYYY-MM-DD'));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if (pm.response.code === 201)\r",
+									"{    \r",
+									"    pm.collectionVariables.set('saleId', responseJson.data.id);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": \"NUMBER-{{$randomInt}}\",\r\n  \"openDate\": \"{{openDate}}\",\r\n  \"customerId\": \"{{$guid}}\",\r\n  \"customerName\": \"{{$randomFirstName}}\",\r\n  \"branchId\": \"{{$guid}}\",\r\n  \"branchName\": \"{{$randomCompanyName}}\",\r\n  \"totalValue\": 30.0,\r\n  \"products\": [\r\n    {\r\n      \"productId\": \"{{$guid}}\",\r\n      \"quantity\": 3.999,\r\n      \"price\": 1,\r\n      \"total\": 4\r\n    },\r\n    {\r\n      \"productId\": \"{{$guid}}\",\r\n      \"quantity\": 6,\r\n      \"price\": 1,\r\n      \"total\": 6\r\n    },\r\n    {\r\n      \"productId\": \"8dcdf2b8-456a-46cd-9c88-c2327b3b85b6\",\r\n      \"quantity\": 10,\r\n      \"price\": 1,\r\n      \"total\": 10\r\n    },\r\n    {\r\n      \"productId\": \"8dcdf2b8-456a-46cd-9c88-c2327b3b85b6\",\r\n      \"quantity\": 10,\r\n      \"price\": 1,\r\n      \"total\": 10\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/sales",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSale",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if (pm.response.code === 201)\r",
+									"{\r",
+									"    pm.globals.set(\"saleId\", responseJson.data.id);    \r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerId\": \"{{$guid}}\",\r\n    \"customerName\": \"{{$randomFirstName}}\",\r\n    \"branchId\": \"{{$guid}}\",\r\n    \"branchName\": \"{{$randomCompanyName}}\",\r\n    \"totalValue\": 30.00,\r\n    \"products\": [\r\n        {            \r\n            \"productId\": \"5a6ff4d4-1487-4a52-8831-9828a4f96296\",\r\n            \"quantity\": 6,\r\n            \"price\": 1,\r\n            \"total\": 6\r\n        },\r\n        {            \r\n            \"productId\": \"06d055b5-f21f-4434-a7f8-ff36b3b72a48\",\r\n            \"quantity\": 9,\r\n            \"price\": 1,\r\n            \"total\": 9.00\r\n        },\r\n        {            \r\n            \"productId\": \"8dcdf2b8-456a-46cd-9c88-c2327b3b85b6\",\r\n            \"quantity\": 15,\r\n            \"price\": 1,\r\n            \"total\": 15.00\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/sales/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"sales",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{saleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSale",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if (pm.response.code === 201)\r",
+									"{    \r",
+									"    pm.collectionVariables.set('saleId', responseJson.data.id);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/sales/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"sales",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{saleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSales",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if (pm.response.code === 201)\r",
+									"{\r",
+									"    pm.globals.set(\"saleId\", responseJson.data.id);    \r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/sales?page=1&size=10&order=customerName Desc",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"sales"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "order",
+									"value": "customerName Desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CancelSale",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/sales/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"sales",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{saleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CancelSaleProduct",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7181/api/sales/:saleId/products/:productId",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7181",
+							"path": [
+								"api",
+								"sales",
+								":saleId",
+								"products",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "saleId",
+									"value": "0e059cdf-e6ba-46e6-8101-0b13281be257"
+								},
+								{
+									"key": "productId",
+									"value": "77aff759-1ead-4d0a-8959-431ea3f3fa41"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "openDate",
+			"value": ""
+		},
+		{
+			"key": "saleId",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
