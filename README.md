@@ -50,7 +50,7 @@ Follow these steps to get the application up and running locally.
    Start by cloning the repository from GitHub. Open your terminal and run the following command:
 
    ```bash
-   git clone [clone](https://github.com/marceloaraujo734/omnia-developer-evaluation.git)
+   git clone https://github.com/marceloaraujo734/omnia-developer-evaluation.git
    
    cd omnia-developer-evaluation
     ```
@@ -158,11 +158,11 @@ Once the containers are up, you can access the API via: [link-local](http://loca
 
 Use Postman or another API testing tool to test the following endpoints:
 
-- **POST /sales** – Create a new sale
-- **PUT /sales/{id}** – Change an existing sale
-- **GET /sales/{id}** – Get sale details
-- **GET /sales** – List sales
-- **DELETE /sales/{id}** – Cancel a sale
+- **POST /api/sales** – Create a new sale
+- **PUT /api/sales/{id}** – Change an existing sale
+- **GET /api/sales/{id}** – Get sale details
+- **GET /api/sales** – List sales
+- **DELETE /api/sales/{id}** – Cancel a sale
 - **DELETE /api/sales/{Id}/products/{productId}** – Cancel a specific product from a sale
 
 ## Running Unit Tests
