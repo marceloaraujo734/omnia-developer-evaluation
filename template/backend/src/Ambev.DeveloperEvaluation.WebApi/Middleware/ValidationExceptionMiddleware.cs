@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.WebApi.Common;
+using Ambev.DeveloperEvaluation.WebApi.Extension;
 using FluentValidation;
-using System.Text.Json;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Middleware
 {
@@ -20,9 +20,17 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             {
                 await _next(context);
             }
-            catch (ValidationException ex)
+            catch (ValidationException exception)
             {
-                await HandleValidationExceptionAsync(context, ex);
+                await HandleValidationExceptionAsync(context, exception);
+            }
+            catch (KeyNotFoundException exception)
+            {
+                await HandleKeyNotFoundExceptionAsync(context, exception);
+            }
+            catch (Exception exception)
+            {
+                await HandleExceptionAsync(context, exception);
             }
         }
 
@@ -39,12 +47,37 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
                     .Select(error => (ValidationErrorDetail)error)
             };
 
-            var jsonOptions = new JsonSerializerOptions
+            return context.Response.WriteAsync(response.ToJson());
+        }
+
+        private static Task HandleKeyNotFoundExceptionAsync(HttpContext context, KeyNotFoundException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+            var response = new 
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                Success = false,
+                Message = "Not Found",
+                Errors = exception.Message
             };
 
-            return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
+            return context.Response.WriteAsync(response.ToJson());
+        }
+
+        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            var response = new
+            {
+                Success = false,
+                Message = exception.Message,
+                Errors = exception.InnerException?.Message ?? exception.StackTrace
+            };
+
+            return context.Response.WriteAsync(response.ToJson());
         }
     }
 }
