@@ -9,7 +9,43 @@ This project is included in the recruitment process for senior developers at Tak
 
 2. Run the command `update-database` to create tables in the database. If it doesn't work, check the appsettings connection string. By default, the PostgreSQL port 5432 is exposed.
 
+3. In order to access the sales functionalities due to the use of Authorize, it will be necessary to create a user and then obtain the token. To do this, follow the documentation for user creation and token retrieval.
+
 # Endpoints Prototype Sales API
+
+## Users
+
+<table>
+  <tr>
+    <th>HTTP Method</th>
+    <th>Endpoint</th>
+    <th>Responses</th>
+    <th>Link</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>/api/users</td>
+    <td>201 (Created) 400 (Bad Request)</td>
+    <td><a href="/.doc/create-user.md" targer="__blank">exemple</a></td>
+  </tr>  
+</table>
+
+## Auth
+
+<table>
+  <tr>
+    <th>HTTP Method</th>
+    <th>Endpoint</th>
+    <th>Responses</th>
+    <th>Link</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>/api/auth</td>
+    <td>201 (Created) 400 (Bad Request)</td>
+    <td><a href="/.doc/auth-api.md" targer="__blank">exemple</a></td>
+  </tr>  
+</table>
 
 ## Sales
 
@@ -18,7 +54,7 @@ This project is included in the recruitment process for senior developers at Tak
     <th>HTTP Method</th>
     <th>Endpoint</th>
     <th>Responses</th>
-    <th>:link:</th>
+    <th>Link</th>
   </tr>
   <tr>
     <td>POST</td>

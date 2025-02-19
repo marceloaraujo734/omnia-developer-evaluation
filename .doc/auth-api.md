@@ -15,12 +15,14 @@
 - Response: 
   ```json
   {
-    "token": "string"
-  }
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJhNmMxODU4Mi1jMmNjLTQzOGQtYmI0Zi1mMDU1ZjhiMzU1ZDMiLCJ1bmlxdWVfbmFtZSI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzM5OTYzODY4LCJleHAiOjE3Mzk5OTI2NjgsImlhdCI6MTczOTk2Mzg2OH0.ZXy_IROQNzgTYeKLC5QnqCDeKs1cnLKD3KvfEdfXYIU",
+        "email": "admin@abinbev.com.br",
+        "name": "Admin",
+        "role": "Admin"
+    },
+    "success": true,
+    "message": "",
+    "errors": []
+}
   ```
-
-<br/>
-<div style="display: flex; justify-content: space-between;">
-  <a href="./users-api.md">Previous: Users API</a>
-  <a href="./project-structure.md">Next: Project Structure</a>
-</div>
